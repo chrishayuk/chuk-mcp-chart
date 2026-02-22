@@ -1,12 +1,12 @@
 [project]
 name = "chuk-mcp-chart"
-version = "1.0.4"
+version = "1.0.5"
 description = "MCP server for interactive data visualisation — bar, pie, line, doughnut, radar, polar, and area charts"
 readme = "README.md"
 license = { text = "Apache-2.0" }
 requires-python = ">=3.11"
 dependencies = [
-    "chuk-mcp-server>=0.23.3",
+    "chuk-mcp-server>=0.23.5",
     "chuk-view-schemas>=0.1.1",
 ]
 
