@@ -10,6 +10,7 @@ primary_region = 'cdg'
 
 [env]
   MCP_SERVER_MODE = 'http'
+  LOG_LEVEL = 'INFO'
   PYTHONDONTWRITEBYTECODE = '1'
   PYTHONUNBUFFERED = '1'
 
