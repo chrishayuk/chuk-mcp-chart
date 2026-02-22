@@ -1,0 +1,28 @@
+# fly.toml app configuration file generated for chuk-mcp-chart on 2026-02-22T17:22:40Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'chuk-mcp-chart'
+primary_region = 'cdg'
+
+[build]
+
+[env]
+  MCP_SERVER_MODE = 'http'
+  PYTHONDONTWRITEBYTECODE = '1'
+  PYTHONUNBUFFERED = '1'
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '512mb'
+  cpu_kind = 'shared'
+  cpus = 1
+  memory_mb = 512
