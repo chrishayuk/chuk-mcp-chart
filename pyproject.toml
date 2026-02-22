@@ -1,6 +1,6 @@
 [project]
 name = "chuk-mcp-chart"
-version = "1.0.5"
+version = "1.0.6"
 description = "MCP server for interactive data visualisation — bar, pie, line, doughnut, radar, polar, and area charts"
 readme = "README.md"
 license = { text = "Apache-2.0" }
