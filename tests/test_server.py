@@ -1,9 +1,20 @@
 """Tests for chuk-mcp-chart server."""
 
 import json
+import sys
+from unittest.mock import patch
 
 import pytest
 
+from chuk_mcp_chart.helpers import (
+    assign_colours,
+    build_values,
+    csv_to_chart_content,
+    json_to_chart_content,
+    normalise_dataset,
+    parse_datasets,
+    parse_labels,
+)
 from chuk_mcp_chart.server import show_chart, chart_from_csv, chart_from_json
 
 
@@ -425,3 +436,111 @@ async def test_dataset_data_and_backgroundColor_combined():
     vals = result.data[0].values
     assert vals[0]["label"] == "A"
     assert vals[0]["value"] == 95
+
+
+# ---------------------------------------------------------------------------
+# helpers — targeted coverage for edge cases
+# ---------------------------------------------------------------------------
+
+
+def test_parse_labels_invalid_json_falls_back():
+    """A '[' prefix that isn't valid JSON falls back to comma-split."""
+    result = parse_labels("[not, valid json")
+    assert result == ["[not", "valid json"]
+
+
+def test_normalise_dataset_backgroundColor_when_color_exists():
+    """backgroundColor is dropped when color is already set."""
+    ds = normalise_dataset({"color": "#ff0000", "backgroundColor": "#0000ff", "values": []})
+    assert ds["color"] == "#ff0000"
+    assert "backgroundColor" not in ds
+
+
+def test_normalise_dataset_borderColor_alias():
+    """borderColor is used as color when color not set."""
+    ds = normalise_dataset({"borderColor": "#00ff00", "values": []})
+    assert ds["color"] == "#00ff00"
+    assert "borderColor" not in ds
+
+
+def test_normalise_dataset_borderColor_dropped_when_color_exists():
+    """borderColor is dropped when color is already set."""
+    ds = normalise_dataset({"color": "#ff0000", "borderColor": "#00ff00", "values": []})
+    assert ds["color"] == "#ff0000"
+    assert "borderColor" not in ds
+
+
+def test_build_values_mixed_labeled_and_plain():
+    """Mix of LabeledValue dicts and plain numbers."""
+    result = build_values([{"label": "A", "value": 10}, 20, 30], ["X", "Y", "Z"])
+    assert result[0] == {"label": "A", "value": 10}
+    assert result[1] == {"label": "Y", "value": 20}
+    assert result[2] == {"label": "Z", "value": 30}
+
+
+def test_build_values_non_numeric_fallback():
+    """Non-numeric values fall back to 0."""
+    result = build_values(["not_a_number", "also_bad"], ["A", "B"])
+    assert result[0] == {"label": "A", "value": 0}
+    assert result[1] == {"label": "B", "value": 0}
+
+
+def test_parse_datasets_none():
+    """None input returns placeholder dataset."""
+    result = parse_datasets(None)
+    assert len(result) == 1
+    assert result[0]["label"] == "Data"
+
+
+def test_parse_datasets_empty_string():
+    """Empty string returns placeholder dataset."""
+    result = parse_datasets("")
+    assert len(result) == 1
+
+
+@pytest.mark.asyncio
+async def test_csv_empty_cell():
+    """Empty cells in CSV should fall back to 0."""
+    csv_text = "Name,Score\nAlice,90\nBob,"
+    result = await chart_from_csv(csv_data=csv_text, chart_type="bar")
+    vals = result.data[0].values
+    assert vals[1]["value"] == 0
+
+
+def test_json_to_chart_content_empty_raises():
+    """Empty list raises ValueError."""
+    with pytest.raises(ValueError, match="must not be empty"):
+        json_to_chart_content([], "bar", None)
+
+
+# ---------------------------------------------------------------------------
+# main() entry point coverage
+# ---------------------------------------------------------------------------
+
+
+def test_main_stdio_mode():
+    """main() in default stdio mode calls mcp.run(stdio=True)."""
+    with patch("chuk_mcp_chart.server.mcp") as mock_mcp:
+        original_argv = sys.argv[:]
+        try:
+            sys.argv = ["chuk-mcp-chart"]
+            from chuk_mcp_chart.server import main
+
+            main()
+            mock_mcp.run.assert_called_once_with(stdio=True)
+        finally:
+            sys.argv = original_argv
+
+
+def test_main_http_mode():
+    """main() with 'http' arg calls mcp.run(stdio=False)."""
+    with patch("chuk_mcp_chart.server.mcp") as mock_mcp:
+        original_argv = sys.argv[:]
+        try:
+            sys.argv = ["chuk-mcp-chart", "http"]
+            from chuk_mcp_chart.server import main
+
+            main()
+            mock_mcp.run.assert_called_once_with(stdio=False)
+        finally:
+            sys.argv = original_argv
