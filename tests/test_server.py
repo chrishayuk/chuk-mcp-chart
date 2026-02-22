@@ -7,9 +7,7 @@ from unittest.mock import patch
 import pytest
 
 from chuk_mcp_chart.helpers import (
-    assign_colours,
     build_values,
-    csv_to_chart_content,
     json_to_chart_content,
     normalise_dataset,
     parse_datasets,
