@@ -59,9 +59,11 @@ mcp = ChukMCPServer(
     mcp,
     "show_chart",
     description=(
-        "Create an interactive chart. Supports bar, line, pie, doughnut, radar, polar, "
-        "and area chart types. Provide labels, one or more datasets with numeric values, "
-        "and optional axis / legend configuration."
+        "Advanced chart tool with full control over axes, legend, and stacking. "
+        "Prefer chart_from_json for simple charts — use this only when you need "
+        "axis labels, legend position, stacking, or multiple overlaid datasets. "
+        "labels: comma-separated (e.g. 'Jan,Feb,Mar'). "
+        "datasets: JSON array of {\"label\":\"Name\",\"values\":[1,2,3]}."
     ),
     read_only_hint=True,
 )
@@ -148,9 +150,9 @@ async def show_chart(
     mcp,
     "chart_from_csv",
     description=(
-        "Parse raw CSV text and automatically create a chart. The first non-numeric "
-        "column becomes labels; every numeric column becomes a dataset. Perfect for "
-        "pasting spreadsheet data."
+        "Create a chart from CSV text. Best when the user pastes or provides CSV data. "
+        "The first non-numeric column becomes labels; numeric columns become datasets. "
+        "Example csv_data: \"Name,Score\\nAlice,85\\nBob,92\\nCarol,78\""
     ),
     read_only_hint=True,
 )
@@ -193,9 +195,10 @@ async def chart_from_csv(
     mcp,
     "chart_from_json",
     description=(
-        "Parse a JSON array of objects and automatically create a chart. The first "
-        "string field becomes labels; every numeric field becomes a dataset. "
-        "Great for API responses or structured data."
+        "RECOMMENDED — the easiest way to create a chart. Pass a JSON array of objects; "
+        "the first string field becomes labels, every numeric field becomes a dataset. "
+        "Example: [{\"name\":\"Python\",\"score\":28},{\"name\":\"JS\",\"score\":21}]. "
+        "chart_type: bar, line, pie, doughnut, radar, polar, or area."
     ),
     read_only_hint=True,
 )
