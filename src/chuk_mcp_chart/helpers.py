@@ -20,16 +20,14 @@ CHART_TYPE_ALIASES = {
 }
 
 DEFAULT_COLOURS = [
-    "#3b82f6",  # blue
-    "#ef4444",  # red
-    "#22c55e",  # green
-    "#f59e0b",  # amber
-    "#8b5cf6",  # violet
-    "#06b6d4",  # cyan
-    "#ec4899",  # pink
-    "#64748b",  # slate
-    "#14b8a6",  # teal
-    "#f97316",  # orange
+    "#3388ff",  # blue
+    "#ff6384",  # pink/red
+    "#36a2eb",  # sky blue
+    "#ffce56",  # yellow
+    "#4bc0c0",  # teal
+    "#9966ff",  # purple
+    "#ff9f40",  # orange
+    "#c9cbcf",  # grey
 ]
 
 
