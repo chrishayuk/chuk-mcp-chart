@@ -53,7 +53,7 @@ This automatically downloads and runs the latest version. Perfect for Claude Des
 uv pip install chuk-mcp-chart
 
 # Or clone and install from source
-git clone https://github.com/chrishayuk/chuk-mcp-chart.git
+git clone https://github.com/IBM/chuk-mcp-chart.git
 cd chuk-mcp-chart
 uv sync --dev
 ```
@@ -68,24 +68,7 @@ pip install chuk-mcp-chart
 
 ### With Claude Desktop
 
-#### Option 1: Use the Public Server (Easiest)
-
-Connect to the hosted public server at `chart.chukai.io`:
-
-**MacOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-**Windows**: `%APPDATA%/Claude/claude_desktop_config.json`
-
-```json
-{
-  "mcpServers": {
-    "chart": {
-      "url": "https://chart.chukai.io/mcp"
-    }
-  }
-}
-```
-
-#### Option 2: Run Locally with uvx
+#### Option 1: Run Locally with uvx
 
 ```json
 {
@@ -98,7 +81,7 @@ Connect to the hosted public server at `chart.chukai.io`:
 }
 ```
 
-#### Option 3: Run Locally with pip
+#### Option 2: Run Locally with pip
 
 ```json
 {
@@ -227,7 +210,7 @@ Parameters:
 
 ```bash
 # Clone the repository
-git clone https://github.com/chrishayuk/chuk-mcp-chart.git
+git clone https://github.com/IBM/chuk-mcp-chart.git
 cd chuk-mcp-chart
 
 # Install with uv (recommended)
@@ -290,7 +273,7 @@ docker run -p 8000:8000 chuk-mcp-chart
 
 ## Architecture
 
-Built on top of [chuk-mcp-server](https://github.com/chrishayuk/chuk-mcp-server) with chart rendering via [chuk-view-schemas](https://github.com/chrishayuk/chuk-mcp-ui):
+Built on top of chuk-mcp-server with chart rendering via chuk-view-schemas:
 
 - **Decorator-driven**: Tools defined with `@chart_tool` — handles view metadata, structured content, and text fallback automatically
 - **Type-safe**: All chart data uses Pydantic v2 models (`ChartContent`, `ChartDataset`, `AxisConfig`, `LegendConfig`)
@@ -315,6 +298,6 @@ Apache License 2.0 - See [LICENSE](LICENSE) file for details.
 ## Acknowledgments
 
 - [Chart.js](https://www.chartjs.org/) for the chart rendering engine
-- [chuk-mcp-server](https://github.com/chrishayuk/chuk-mcp-server) for the MCP framework
+- [chuk-mcp-server](https://github.com/IBM/chuk-mcp-server) for the MCP framework
 - [Model Context Protocol](https://modelcontextprotocol.io/) for the MCP specification
 - [Anthropic](https://www.anthropic.com/) for Claude and MCP support

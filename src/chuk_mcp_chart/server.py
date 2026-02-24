@@ -63,7 +63,7 @@ mcp = ChukMCPServer(
         "Prefer chart_from_json for simple charts — use this only when you need "
         "axis labels, legend position, stacking, or multiple overlaid datasets. "
         "labels: comma-separated (e.g. 'Jan,Feb,Mar'). "
-        "datasets: JSON array of {\"label\":\"Name\",\"values\":[1,2,3]}."
+        'datasets: JSON array of {"label":"Name","values":[1,2,3]}.'
     ),
     read_only_hint=True,
 )
@@ -152,7 +152,7 @@ async def show_chart(
     description=(
         "Create a chart from CSV text. Best when the user pastes or provides CSV data. "
         "The first non-numeric column becomes labels; numeric columns become datasets. "
-        "Example csv_data: \"Name,Score\\nAlice,85\\nBob,92\\nCarol,78\""
+        'Example csv_data: "Name,Score\\nAlice,85\\nBob,92\\nCarol,78"'
     ),
     read_only_hint=True,
 )
@@ -197,7 +197,7 @@ async def chart_from_csv(
     description=(
         "RECOMMENDED — the easiest way to create a chart. Pass a JSON array of objects; "
         "the first string field becomes labels, every numeric field becomes a dataset. "
-        "Example: [{\"name\":\"Python\",\"score\":28},{\"name\":\"JS\",\"score\":21}]. "
+        'Example: [{"name":"Python","score":28},{"name":"JS","score":21}]. '
         "chart_type: bar, line, pie, doughnut, radar, polar, or area."
     ),
     read_only_hint=True,

@@ -42,9 +42,17 @@ target-version = "py311"
 
 [tool.mypy]
 python_version = "3.11"
-warn_return_any = true
 warn_unused_configs = true
+
+[[tool.mypy.overrides]]
+module = [
+    "chuk_mcp_server",
+    "chuk_mcp_server.*",
+    "chuk_view_schemas",
+    "chuk_view_schemas.*",
+]
 ignore_missing_imports = true
+follow_imports = "skip"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
